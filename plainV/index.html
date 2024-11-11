@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>plainV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        input[type="button"] {
+            padding: 10px 20px;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px;
+        }
+
+        input[type="button"]:hover {
+            background-color: #1C86EE;
+        }
+
+        #videoContainer {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 720px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .blocker-link {
+            display: none; /* Initially hidden */
+            color: #1E90FF;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .bypass-link {
+            display: none; /* Initially hidden */
+            color: #1E90FF;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Portrait mode for mobile devices */
+        @media only screen and (max-width: 768px) {
+            .video-wrapper {
+                padding-bottom: 177.78%; /* 9:16 Aspect Ratio for Portrait */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>plainV</h1>
+    <div class="form-container">
+        <input type="text" id="youtubeURL" placeholder="Enter full YouTube or YouTube Shorts URL">
+        <input type="button" value="Play Video" onclick="embedVideo()">
+    </div>
+
+    <div id="videoContainer"></div>
+    <div id="blockerLink" class="blocker-link" onclick="showBypassLink()">Video Blocked? Click here!</div>
+    <div id="bypassLink" class="bypass-link">
+        <a href="https://bypassv.arulbalaji.xyz" target="_blank" style="color: #1E90FF; text-decoration: underline;">Bypass Restriction Now</a>
+    </div>
+
+    <script>
+        function embedVideo() {
+            var url = document.getElementById('youtubeURL').value;
+            var videoID = extractVideoID(url);
+            var videoContainer = document.getElementById('videoContainer');
+            var blockerLink = document.getElementById('blockerLink');
+            var bypassLink = document.getElementById('bypassLink');
+
+            // Reset the state
+            blockerLink.style.display = 'block'; // Show blocker link by default
+            bypassLink.style.display = 'none'; // Hide bypass link initially
+            videoContainer.innerHTML = ''; // Clear previous video
+
+            if (videoID) {
+                var embedHTML = `<div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${videoID}?autoplay=1&controls=1" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
+                videoContainer.innerHTML = embedHTML;
+            } else {
+                videoContainer.innerHTML = '<p class="link">Invalid YouTube URL. Please enter a valid URL.</p>';
+            }
+        }
+
+        function extractVideoID(url) {
+            var regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/;
+            var matches = url.match(regex);
+            return matches ? matches[1] : null;
+        }
+
+        function showBypassLink() {
+            var blockerLink = document.getElementById('blockerLink');
+            var bypassLink = document.getElementById('bypassLink');
+            blockerLink.style.display = 'none'; // Hide blocker link when clicked
+            bypassLink.style.display = 'block'; // Show bypass link
+        }
+    </script>
+
+</body>
+</html>
+
